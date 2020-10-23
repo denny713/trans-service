@@ -4,8 +4,14 @@ import com.trans.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface TransactionRepository extends JpaRepository<Transaction, String> {
+import java.util.List;
 
-    public Transaction findFirstByOrderByTransIdDesc();
+@Repository
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+
+    public List<Transaction> findByTypeOrderByParentId(String type);
+
+    public List<Transaction> findByTransId(Long transId);
+
+    public Transaction findByParentId(Long parentId);
 }

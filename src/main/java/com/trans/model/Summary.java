@@ -1,4 +1,4 @@
-package com.trans.model.response;
+package com.trans.model;
 
 import lombok.Data;
 

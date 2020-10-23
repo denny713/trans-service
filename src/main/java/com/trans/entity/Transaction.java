@@ -13,11 +13,11 @@ import javax.persistence.Table;
 public class Transaction {
 
     @Id
-    @Column(name = "transaction_id", length = 15)
-    private String transId;
-
     @Column(name = "parent_id")
     private Long parentId;
+
+    @Column(name = "trans_id")
+    private Long transId;
 
     @Column(name = "type", length = 25)
     private String type;

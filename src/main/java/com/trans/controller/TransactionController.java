@@ -1,15 +1,15 @@
 package com.trans.controller;
 
 import com.trans.entity.Transaction;
-import com.trans.model.request.TransInput;
-import com.trans.model.response.Status;
-import com.trans.model.response.Summary;
+import com.trans.model.Status;
+import com.trans.model.Summary;
+import com.trans.model.TransModel;
 import com.trans.service.TransactionService;
-import com.trans.util.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/transactionservice")
@@ -24,18 +24,15 @@ public class TransactionController {
 
     @PutMapping("/transaction/{transaction_id}")
     @ResponseBody
-    public Status saveTrans(@Valid @RequestBody TransInput trans, @PathVariable("transaction_id") String id) {
+    public Status saveTrans(@Valid @RequestBody TransModel trans, @PathVariable("transaction_id") String id) {
         try {
             Transaction transaction = new Transaction();
-            Transaction maxId = transactionService.getNewestTransaction();
-            String ids = "";
-            if (maxId == null) {
-                ids = "-";
-            } else {
-                ids = maxId.getTransId();
-            }
-            transaction.setTransId(Function.generateTransId(ids));
             transaction.setParentId(Long.valueOf(id));
+            if (trans.getParentId() == null) {
+                transaction.setTransId(Long.valueOf(id));
+            } else {
+                transaction.setTransId(trans.getParentId());
+            }
             transaction.setAmount(trans.getAmount());
             transaction.setType(trans.getType());
             transactionService.saveTransaction(transaction);
@@ -44,5 +41,17 @@ public class TransactionController {
             status.setStatus("Failed : " + d.getMessage());
         }
         return status;
+    }
+
+    @GetMapping("/types/{type}")
+    @ResponseBody
+    public List<Long> getByType(@PathVariable("type") String type) {
+        return transactionService.getByType(type);
+    }
+
+    @GetMapping("/sum/{transaction_id}")
+    @ResponseBody
+    public Summary summaryById(@PathVariable("transaction_id") String id) {
+        return transactionService.sumById(Long.valueOf(id));
     }
 }
