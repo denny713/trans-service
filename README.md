@@ -19,6 +19,7 @@ Usage :
 - Install project with command 'mvn clean install'
 - For ignore all tests while install project, user command 'mvn clean install -Dmaven.test.skip=true'
 - Run project with command 'mvn spring-boot:run'
+- Tables in the database are automatically created when the project is run
 - Use link https://www.getpostman.com/collections/5d25d144ee2bc3fba2a1 for testing using Postman Tools
-- Also test using Swagger in http://localhost:7017/swagger-ui.html
+- Also can test using Swagger in http://localhost:7017/swagger-ui.html
 - Enjoy the project
